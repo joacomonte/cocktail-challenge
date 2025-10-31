@@ -1,0 +1,45 @@
+<mat-toolbar color="primary">
+  <mat-icon aria-hidden="true">local_bar</mat-icon>
+  <span class="toolbar-title">Cocktails</span>
+</mat-toolbar>
+
+<mat-card class="card">
+  <div class="card-header">
+    <mat-icon>search</mat-icon>
+    <span>Search results for "{{ store.searchTerm() }}"</span>
+  </div>
+
+  <div #scrollContainer class="scroll-container">
+    <table mat-table [dataSource]="store.displayedDrinks()" class="mat-elevation-z1">
+      <!-- ID Column -->
+      <ng-container matColumnDef="idDrink">
+        <th mat-header-cell *matHeaderCellDef>ID</th>
+        <td mat-cell *matCellDef="let row">{{ row.idDrink }}</td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="strDrink">
+        <th mat-header-cell *matHeaderCellDef>Name</th>
+        <td mat-cell *matCellDef="let row">{{ row.strDrink }}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+
+    @if (!store.loading() && store.displayedDrinks().length === 0) {
+      <div class="empty">No results.</div>
+    }
+
+    <!-- Sentinel for infinite scroll -->
+    <div #sentinel class="sentinel" aria-hidden="true"></div>
+  </div>
+
+  @if (store.loading()) {
+    <div class="loading">
+      <mat-progress-spinner mode="indeterminate" diameter="32"></mat-progress-spinner>
+      <span>Loading…</span>
+    </div>
+  }
+</mat-card>
+
