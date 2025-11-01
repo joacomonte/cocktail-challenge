@@ -1,0 +1,22 @@
+<mat-form-field appearance="outline" class="search-field">
+  <mat-label>Search by ingredient</mat-label>
+  <input
+    #input
+    matInput
+    [matAutocomplete]="auto"
+    inputmode="numeric"
+    pattern="[0-9]*"
+    maxlength="50"
+    (input)="onInput($any($event.target).value)"
+    (keyup.enter)="onSearch()"
+  />
+  <button mat-icon-button matSuffix aria-label="Clear" (click)="clear()">
+    <mat-icon>close</mat-icon>
+  </button>
+
+  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event.option.value)">
+    <mat-option *ngFor="let opt of filtered" [value]="opt">{{ opt }}</mat-option>
+  </mat-autocomplete>
+</mat-form-field>
+
+

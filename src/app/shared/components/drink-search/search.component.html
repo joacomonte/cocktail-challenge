@@ -1,0 +1,12 @@
+<mat-form-field appearance="outline" class="search-field">
+  <mat-label>Search by name</mat-label>
+  <input #input matInput maxlength="50" (keyup.enter)="onSearch()" />
+  <button mat-icon-button matSuffix aria-label="Clear" (click)="clear()">
+    <mat-icon>close</mat-icon>
+  </button>
+  <button mat-icon-button matSuffix aria-label="Search" (click)="onSearch()">
+    <mat-icon>search</mat-icon>
+  </button>
+</mat-form-field>
+
+

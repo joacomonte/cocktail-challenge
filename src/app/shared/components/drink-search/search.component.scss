@@ -1,0 +1,18 @@
+.search-field {
+  width: 100%;
+  max-width: 520px;
+  display: block;
+}
+
+/* Make the field a bit tighter on small screens */
+@media (max-width: 420px) {
+  .search-field {
+    max-width: 100%;
+  }
+}
+
+.search-field .mat-form-field-wrapper {
+  align-items: center;
+}
+
+
