@@ -15,7 +15,7 @@
 </div>
 
 <mat-card class="card">
-  <div #scrollContainer class="scroll-container" (scroll)="onScroll($event)">
+  <div #scrollContainer class="scroll-container" (scroll)="onScroll($event)" role="region" aria-live="polite" aria-label="Search results">
     <table mat-table [dataSource]="store.displayedDrinks()" class="mat-elevation-z1">
       <!-- Actions Column (context menu) -->
       <ng-container matColumnDef="actions">
@@ -62,7 +62,7 @@
   </div>
 
   @if (store.loading()) {
-    <div class="loading">
+    <div class="loading" role="status" aria-live="polite">
       <mat-progress-spinner mode="indeterminate" diameter="32"></mat-progress-spinner>
       <span>Loading…</span>
     </div>

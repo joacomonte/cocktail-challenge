@@ -9,6 +9,7 @@
     maxlength="50"
     (input)="onInput($any($event.target).value)"
     (keyup.enter)="onSearch()"
+    aria-label="Search by ingredient"
   />
   <button mat-icon-button matSuffix aria-label="Clear" (click)="clear()">
     <mat-icon>close</mat-icon>

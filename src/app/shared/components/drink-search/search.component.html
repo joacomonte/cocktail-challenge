@@ -1,6 +1,6 @@
 <mat-form-field appearance="outline" class="search-field">
   <mat-label>Search by name</mat-label>
-  <input #input matInput maxlength="50" (keyup.enter)="onSearch()" />
+  <input #input matInput maxlength="50" (keyup.enter)="onSearch()" aria-label="Search by name" />
   <button mat-icon-button matSuffix aria-label="Clear" (click)="clear()">
     <mat-icon>close</mat-icon>
   </button>

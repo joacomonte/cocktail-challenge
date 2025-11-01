@@ -1,6 +1,6 @@
 <mat-form-field appearance="outline" class="search-field">
   <mat-label>Search by ID</mat-label>
-  <input #input matInput inputmode="numeric" pattern="[0-9]*" maxlength="20" (keyup.enter)="onSearch()" />
+  <input #input matInput inputmode="numeric" pattern="[0-9]*" maxlength="20" (keyup.enter)="onSearch()" aria-label="Search by ID" />
   <button mat-icon-button matSuffix aria-label="Clear" (click)="clear()">
     <mat-icon>close</mat-icon>
   </button>
