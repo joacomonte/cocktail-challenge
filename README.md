@@ -4,11 +4,23 @@
 ````markdown
 # Configuración del Proyecto Angular
 
-```bash
+
 nvm install 22.12.0 && nvm use 22.12.0
 
 npx @angular/cli@20 new my-app --routing --style=scss
 cd my-app
+````
+
+
+
+
+````markdown
+# Como iniciar la APP
+
+
+npm install
+npm start
+
 ````
 
 ---
