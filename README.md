@@ -1,59 +1,139 @@
-# MyApp
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.8.
+---
 
-## Development server
-
-To start a local development server, run:
+````markdown
+# Configuración del Proyecto Angular
 
 ```bash
-ng serve
+nvm install 22.12.0 && nvm use 22.12.0
+
+npx @angular/cli@20 new my-app --routing --style=scss
+cd my-app
+````
+
+---
+
+## Estructura de Carpetas
+
+```
+src/
+ └── app/
+      ├── core/
+      │     ├── api/                ← low‐level HTTP clients, etc.
+      │     ├── services/           ← singleton app‐wide services
+      │     ├── guards/
+      │     └── models/             ← global/shared interfaces/types
+      │
+      ├── shared/
+      │     ├── components/         ← reusable UI bits (buttons, etc.)
+      │     ├── directives/
+      │     ├── pipes/
+      │     └── models/             ← shared interfaces/types used by many features
+      │
+      ├── features/
+      │     ├── feature-A/
+      │     │     ├── components/
+      │     │     ├── services/
+      │     │     ├── models/
+      │     │     └── feature-A.module.ts (or standalone setup)
+      │     └── feature-B/
+      │           ├── …
+      │
+      ├── app.routes.ts                ← routing setup
+      └── app.component.ts
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+---
 
-## Code scaffolding
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Decisiones de Diseño
 
-```bash
-ng generate component component-name
-```
+### Buscadores: ID, Nombre, Ingredientes
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Se evaluó entre usar **FormBuilder** o componentes simples.
+Se eligió **inputs individuales** por la simpleza y libertad de personalización, además de facilitar las pruebas unitarias.
+Sin embargo, en aplicaciones con muchos filtros podría no ser viable.
 
-```bash
-ng generate --help
-```
+---
 
-## Building
+### Grilla o Tarjetas
 
-To build the project run:
+Se optó por **grilla** debido a:
 
-```bash
-ng build
-```
+* Facilidad de personalización y futuros filtros o ordenamientos.
+* Mayor legibilidad con grandes volúmenes de datos.
+* Permite mostrar más información en menos espacio.
+  El **detalle del cóctel** se presenta en formato **Card** (responsive para mobile/desktop).
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+---
 
-## Running unit tests
+### Carga de Datos
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+**Loading state simple**: texto con ícono, para mantener la interfaz ligera y clara.
 
-```bash
-ng test
-```
+---
 
-## Running end-to-end tests
+### Listas Largas: Infinite Scroll
 
-For end-to-end (e2e) testing, run:
+Se implementó el **Sentinel approach**, un método eficiente y simple.
+Permite ajustar el *trigger margin* según las necesidades de UX.
 
-```bash
-ng e2e
-```
+---
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+### Favoritos
 
-## Additional Resources
+* Implementado con un **switch**, intuitivo y consistente con la app.
+* Muestra resultados solo tras una búsqueda.
+* Posibilidad de agregar función para mostrar todos los favoritos (decisión pendiente).
+* Ícono de favorito **filled/outlined** según estado del cóctel.
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+---
+
+### Persistencia de Datos
+
+Se evaluó usar **IndexedDB**, pero se descartó por complejidad innecesaria.
+En frontend, suele reservarse para casos de alto rendimiento.
+Si se requiriera rendimiento extremo, se podría usar **DuckDB** + **Parquets**.
+Finalmente, se eligió **localStorage**, que persiste entre pestañas (a diferencia de sessionStorage).
+
+---
+
+### Estado Global
+
+El archivo `cocktails.store.ts` utiliza **Angular Signals**.
+Esto permite un flujo de datos **reactivo, eficiente y fácilmente rastreable**.
+
+#### Separación de Responsabilidades (SoC)
+
+* **API Layer (`cocktails.api.ts`):** llamadas HTTP.
+* **State Layer (`cocktails.store.ts`):** estado, lógica de negocio y persistencia.
+* **View Layer:** presentación e interacción con el usuario.
+
+---
+
+### Componentes Standalone
+
+Se eliminan los `NgModules`, haciendo los componentes más **autocontenidos y reutilizables**.
+
+---
+
+### Sincronización de Estado
+
+El `CocktailsStore` guarda automáticamente el estado de la app (búsquedas, favoritos, etc.) en **localStorage**
+y **sincroniza entre pestañas** mediante eventos de `storage`, mejorando la experiencia del usuario.
+
+---
+
+### Pruebas Unitarias
+
+Cada componente y servicio tiene su correspondiente archivo `.spec.ts`.
+
+---
+
+### Modularidad
+
+La estructura `core`, `features`, `shared` garantiza **orden, reutilización y escalabilidad**.
+
+---
+
+
