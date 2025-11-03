@@ -3,19 +3,27 @@
   <span class="toolbar-title">Cocktails</span>
 </mat-toolbar>
 
-
 <div class="filters-container">
-  <mat-slide-toggle [checked]="store.displayFavored()" (change)="store.toggleDisplayFavored()">Display only favored cocktails</mat-slide-toggle>
+  <mat-slide-toggle [checked]="store.displayFavored()" (change)="store.toggleDisplayFavored()"
+    >Display only favored cocktails</mat-slide-toggle
+  >
 </div>
 
 <div class="filters-container">
-  <app-search (search)="onSearchName($event)"></app-search>
+  <app-search (search)="onSearchByName($event)"></app-search>
   <app-ingredient-search (search)="onSearchByIngredient($event)"></app-ingredient-search>
   <app-id-search (search)="onSearchById($event)"></app-id-search>
 </div>
 
 <mat-card class="card">
-  <div #scrollContainer class="scroll-container" (scroll)="onScroll($event)" role="region" aria-live="polite" aria-label="Search results">
+  <div
+    #scrollContainer
+    class="scroll-container"
+    (scroll)="onScroll($event)"
+    role="region"
+    aria-live="polite"
+    aria-label="Search results"
+  >
     <table mat-table [dataSource]="store.displayedDrinks()" class="mat-elevation-z1">
       <!-- Actions Column (context menu) -->
       <ng-container matColumnDef="actions">
@@ -31,7 +39,9 @@
               <span>See details</span>
             </button>
             <button mat-menu-item (click)="store.toggleFavorite(row.idDrink)">
-              <mat-icon>{{ store.isFavorited(row.idDrink) ? 'favorite' : 'favorite_border' }}</mat-icon>
+              <mat-icon>{{
+                store.isFavorited(row.idDrink) ? 'favorite' : 'favorite_border'
+              }}</mat-icon>
               <span>Favorite</span>
             </button>
           </mat-menu>
@@ -55,17 +65,16 @@
     </table>
 
     @if (!store.loading() && store.displayedDrinks().length === 0) {
-      <div class="empty">No results.</div>
+    <div class="empty">No results.</div>
     }
 
     <div #sentinel class="sentinel" aria-hidden="true"></div>
   </div>
 
   @if (store.loading()) {
-    <div class="loading" role="status" aria-live="polite">
-      <mat-progress-spinner mode="indeterminate" diameter="32"></mat-progress-spinner>
-      <span>Loading…</span>
-    </div>
+  <div class="loading" role="status" aria-live="polite">
+    <mat-progress-spinner mode="indeterminate" diameter="32"></mat-progress-spinner>
+    <span>Loading…</span>
+  </div>
   }
 </mat-card>
-

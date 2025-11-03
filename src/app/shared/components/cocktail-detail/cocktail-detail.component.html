@@ -9,39 +9,43 @@
   @if (!loading && detail) {
     <div class="detail-content">
       <div class="detail-header">
-        <h2>{{ detail.strDrink }}</h2>
-        <p class="category">{{ detail.strCategory }}</p>
+        <div class="header-title">
+          <h2>{{ detail.strDrink }}</h2>
+          <p class="category">{{ detail.strCategory }}</p>
+        </div>
         <button mat-icon-button class="close-button" (click)="close()" aria-label="Close">
           <mat-icon>close</mat-icon>
         </button>
       </div>
-      
-      <div class="image-container">
-        <div class="image-placeholder" *ngIf="!imageLoaded"></div>
-        <img class="drink-image" [src]="detail.strDrinkThumb" [alt]="detail.strDrink" (load)="onImageLoad()" [class.loaded]="imageLoaded" />
-      </div>
 
-      <div class="detail-body">
-        <h3>Ingredients</h3>
-        <ul class="ingredients">
-          <li *ngFor="let item of ingredients">
-            <span class="ingredient">{{ item.ingredient }}</span>
-            <span class="measure"> — {{ item.measure || 'Eyeballing it' }}</span>
-          </li>
-        </ul>
+      <div class="detail-main">
+        <div class="image-container">
+          <div class="image-placeholder" *ngIf="!imageLoaded"></div>
+          <img class="drink-image" [src]="detail.strDrinkThumb" [alt]="detail.strDrink" (load)="onImageLoad()" [class.loaded]="imageLoaded" />
+        </div>
 
-        <div class="instructions">
-          <mat-form-field appearance="outline" class="lang-field">
-            <mat-label>Instructions language</mat-label>
-            <mat-select [(value)]="selectedLang">
-              <mat-option value="EN">English</mat-option>
-              <mat-option value="ES">Español</mat-option>
-              <mat-option value="DE">Deutsch</mat-option>
-              <mat-option value="FR">Français</mat-option>
-              <mat-option value="IT">Italiano</mat-option>
-            </mat-select>
-          </mat-form-field>
-          <p class="instruction-text">{{ instructions }}</p>
+        <div class="detail-body">
+          <h3>Ingredients</h3>
+          <ul class="ingredients">
+            <li *ngFor="let item of ingredients">
+              <span class="ingredient">{{ item.ingredient }}</span>
+              <span class="measure"> — {{ item.measure || 'Eyeballing it' }}</span>
+            </li>
+          </ul>
+
+          <div class="instructions">
+            <mat-form-field appearance="outline" class="lang-field">
+              <mat-label>Instructions language</mat-label>
+              <mat-select [(value)]="selectedLang">
+                <mat-option value="EN">English</mat-option>
+                <mat-option value="ES">Español</mat-option>
+                <mat-option value="DE">Deutsch</mat-option>
+                <mat-option value="FR">Français</mat-option>
+                <mat-option value="IT">Italiano</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <p class="instruction-text">{{ instructions }}</p>
+          </div>
         </div>
       </div>
     </div>

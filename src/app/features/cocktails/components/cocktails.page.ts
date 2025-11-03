@@ -66,19 +66,22 @@ export class CocktailsPage {
     const id = row?.idDrink as string | undefined;
     if (!id) return;
     this.dialog.open(CocktailDetailComponent, {
-      width: '350px',
-      maxHeight: '600px',
+      width: '95vw',
+      maxWidth: '900px',
+      maxHeight: '90vh',
       data: { id },
       panelClass: 'cocktail-detail-dialog',
     });
   }
 
-  public onSearchName(term?: string) {
+  public onSearchByName(term?: string) {
     this.store.search(term ?? '');
     try {
       this.ingredientSearchComp?.clear();
       this.idSearchComp?.clear();
-    } catch {}
+    } catch {
+      console.error('Error clearing ingredient search');
+    }
   }
 
   public onSearchByIngredient(term?: string) {
@@ -86,7 +89,9 @@ export class CocktailsPage {
     try {
       this.nameSearchComp?.clear();
       this.idSearchComp?.clear();
-    } catch {}
+    } catch {
+      console.error('Error clearing name search');
+    }
   }
 
   public onSearchById(term?: string) {
@@ -94,16 +99,20 @@ export class CocktailsPage {
     try {
       this.nameSearchComp?.clear();
       this.ingredientSearchComp?.clear();
-    } catch {}
+    } catch {
+      console.error('Error clearing id search');
+    }
   }
 
-  // favorite handled via store
+
   onScroll(event: Event) {
     const el = event.target as HTMLElement;
-    // persist scroll position so other tabs can restore it
+    // persist scroll position
     try {
       localStorage.setItem(this.scrollStorageKey, String(el.scrollTop || 0));
-    } catch {}
+    } catch {
+      console.error('Error persisting scroll position to localStorage');
+    }
     const nearBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 48;
     if (nearBottom && this.store.hasMore() && !this.scrollLock && !this.store.loading()) {
       this.scrollLock = true;

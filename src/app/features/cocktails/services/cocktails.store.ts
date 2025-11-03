@@ -47,10 +47,8 @@ export class CocktailsStore {
   });
 
   constructor() {
-    // Load persisted state if present
     this.restoreFromLocalStorage();
 
-    // Persist state on change
     effect(() => {
       const stateToPersist: CocktailsPersistedState = {
         searchTerm: this.searchTerm(),
@@ -62,7 +60,7 @@ export class CocktailsStore {
       try {
         localStorage.setItem(this.storageKey, JSON.stringify(stateToPersist));
       } catch {
-        // ignore persistence errors
+        console.error('Error persisting state to localStorage');
       }
     });
 
@@ -77,7 +75,7 @@ export class CocktailsStore {
           this.favorites.set(Array.isArray(incoming.favorites) ? incoming.favorites : []);
           this.displayFavored.set(Boolean(incoming.displayFavored));
         } catch {
-          // ignore corrupt values
+          console.error('Error parsing state from localStorage');
         }
       }
     });
@@ -92,7 +90,7 @@ export class CocktailsStore {
     const normalized = term?.trim() || this.defaultSearch;
     this.searchTerm.set(normalized);
     this.loading.set(true);
-    this.page.set(1);
+    this.resetPaging();
     this.cocktailsApi.searchByName(normalized).subscribe({
       next: (drinks) => {
         this.drinks.set(drinks);
@@ -110,7 +108,7 @@ export class CocktailsStore {
     if (!normalized) return;
     this.searchTerm.set(normalized);
     this.loading.set(true);
-    this.page.set(1);
+    this.resetPaging();
     this.cocktailsApi.filterByIngredient(normalized).subscribe({
       next: (drinks) => {
         this.drinks.set(drinks);
@@ -128,7 +126,7 @@ export class CocktailsStore {
     if (!normalized) return;
     this.searchTerm.set(normalized);
     this.loading.set(true);
-    this.page.set(1);
+    this.resetPaging();
     this.cocktailsApi.lookupById(normalized).subscribe({
       next: (drinks) => {
         this.drinks.set(drinks);
@@ -162,7 +160,7 @@ export class CocktailsStore {
       if (Array.isArray(parsed.favorites)) this.favorites.set(parsed.favorites);
       if (typeof parsed.displayFavored === 'boolean') this.displayFavored.set(parsed.displayFavored);
     } catch {
-      // ignore
+      console.error('Error restoring state from localStorage');
     }
   }
 

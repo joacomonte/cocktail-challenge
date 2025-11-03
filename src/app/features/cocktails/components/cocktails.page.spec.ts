@@ -48,8 +48,8 @@ describe('CocktailsPage', () => {
     expect(dialogMock.open).not.toHaveBeenCalled();
   });
 
-  it('onSearchName delegates to store.search', () => {
-    page.onSearchName('  mojito  ');
+  it('onSearchByName delegates to store.search', () => {
+    page.onSearchByName('  mojito  ');
     expect(storeMock.search).toHaveBeenCalledWith('  mojito  ');
   });
 
